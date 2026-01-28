@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 ThingsBoard
+#
+# SPDX-License-Identifier: Apache-2.0
+
 [submodule "sdk_core"]
 	path = sdk_core
 	url = https://github.com/thingsboard/thingsboard-micro-sdk-core
