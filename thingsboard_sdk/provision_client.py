@@ -22,7 +22,7 @@ Implementation Notes
 
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
 
-from sdk_core.provision_client import ProvisionClientBase
+from .sdk_core.provision_client import ProvisionClientBase
 
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/samson0v/CircuitPython_thingsboard-client-sdk.git"

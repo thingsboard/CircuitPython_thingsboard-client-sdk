@@ -22,8 +22,9 @@ Implementation Notes
 
 from adafruit_minimqtt.adafruit_minimqtt import MQTT, MMQTTException
 
-from sdk_core.device_mqtt import TBDeviceMqttClientBase
 from thingsboard_sdk.provision_client import ProvisionClient
+
+from .sdk_core.device_mqtt import TBDeviceMqttClientBase
 
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/samson0v/CircuitPython_thingsboard-client-sdk.git"

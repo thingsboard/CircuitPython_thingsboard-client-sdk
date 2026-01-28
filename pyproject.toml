@@ -41,7 +41,7 @@ classifiers = [
 dynamic = ["dependencies", "optional-dependencies"]
 
 [tool.setuptools]
-packages = ["sdk_core", "thingsboard_sdk"]
+packages = ["thingsboard_sdk"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
