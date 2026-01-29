@@ -11,14 +11,14 @@ requires = [
 ]
 
 [project]
-name = "circuitpython-thingsboard-client-sdk"
+name = "thingsboard-circuitpython-client-sdk"
 description = "ThingsBoard CircuitPython client SDK"
 version = "0.0.0+auto.0"
 readme = "README.rst"
 authors = [
     {name = "ThingsBoard Inc.", email = "vitalikbidochka@gmail.com"}
 ]
-urls = {Homepage = "https://github.com/samson0v/CircuitPython_thingsboard-client-sdk"}
+urls = {Homepage = "https://github.com/thingsboard/CircuitPython_thingsboard-client-sdk"}
 keywords = [
     "adafruit",
     "blinka",
