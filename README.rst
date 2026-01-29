@@ -1,7 +1,8 @@
-[![Join our Discord]()]()
+
 .. image:: https://img.shields.io/badge/Discord-Join%20our%20server-5865F2?style=for-the-badge&logo=discord&logoColor=white
     :target: https://discord.gg/mJxDjAM3PF
     :alt: Discord Server
+
 
 .. image:: https://github.com/thingsboard/CircuitPython_thingsboard-client-sdk/workflows/Build%20CI/badge.svg
     :target: https://github.com/thingsboard/CircuitPython_thingsboard-client-sdk/actions
@@ -95,6 +96,7 @@ Getting Started
 Client initialization and telemetry publishing
 
 .. code-block:: python
+
     from tb_device_mqtt import TBDeviceMqttClient
     telemetry = {"temperature": 41.9, "enabled": False, "currentFirmwareVersion": "v1.2.2"}
     client = TBDeviceMqttClient(host="127.0.0.1", port=1883, access_token="A1_TEST_TOKEN")
