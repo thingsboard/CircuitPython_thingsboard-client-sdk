@@ -113,3 +113,16 @@ Contributing
 Contributions are welcome! Please read our `Code of Conduct
 <https://github.com/thingsboard/CircuitPython_thingsboard-client-sdk/blob/HEAD/CODE_OF_CONDUCT.md>`_
 before contributing to help this project stay welcoming.
+
+Support
+=======
+
+ - `Join our Discord <https://discord.gg/mJxDjAM3PF>`_
+ - `Community chat <https://gitter.im/thingsboard/chat>`_
+ - `Q&A forum <https://groups.google.com/forum/#!forum/thingsboard>`_
+ - `Stackoverflow <http://stackoverflow.com/questions/tagged/thingsboard>`_
+
+Licenses
+========
+
+This project is released under [Apache 2.0 License](./LICENSE).
