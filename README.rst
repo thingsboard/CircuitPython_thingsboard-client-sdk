@@ -1,5 +1,7 @@
-[![Join our Discord](https://img.shields.io/badge/Discord-Join%20our%20server-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/mJxDjAM3PF)
-
+[![Join our Discord]()]()
+.. image:: https://img.shields.io/badge/Discord-Join%20our%20server-5865F2?style=for-the-badge&logo=discord&logoColor=white
+    :target: https://discord.gg/mJxDjAM3PF
+    :alt: Discord Server
 
 .. image:: https://github.com/thingsboard/CircuitPython_thingsboard-client-sdk/workflows/Build%20CI/badge.svg
     :target: https://github.com/thingsboard/CircuitPython_thingsboard-client-sdk/actions
@@ -21,7 +23,7 @@ This project is a CircuitPython library that provides convenient client SDK for 
 
 **SDK supports:**
 
-- [Device MQTT](https://thingsboard.io/docs/reference/mqtt-api/) API provided by ThingsBoard
+- `Device MQTT <https://thingsboard.io/docs/reference/mqtt-api/>`_ API provided by ThingsBoard
 - QoS 0 and 1
 - Automatic reconnect
 - Device Claiming
@@ -92,17 +94,16 @@ Getting Started
 
 Client initialization and telemetry publishing
 
-```python
-from tb_device_mqtt import TBDeviceMqttClient
-telemetry = {"temperature": 41.9, "enabled": False, "currentFirmwareVersion": "v1.2.2"}
-client = TBDeviceMqttClient(host="127.0.0.1", port=1883, access_token="A1_TEST_TOKEN")
-# Connect to ThingsBoard
-client.connect()
-# Sending telemetry without checking the delivery status
-client.send_telemetry(telemetry)
-# Disconnect from ThingsBoard
-client.disconnect()
-```
+.. code-block:: python
+    from tb_device_mqtt import TBDeviceMqttClient
+    telemetry = {"temperature": 41.9, "enabled": False, "currentFirmwareVersion": "v1.2.2"}
+    client = TBDeviceMqttClient(host="127.0.0.1", port=1883, access_token="A1_TEST_TOKEN")
+    # Connect to ThingsBoard
+    client.connect()
+    # Sending telemetry without checking the delivery status
+    client.send_telemetry(telemetry)
+    # Disconnect from ThingsBoard
+    client.disconnect()
 
 Contributing
 ============
