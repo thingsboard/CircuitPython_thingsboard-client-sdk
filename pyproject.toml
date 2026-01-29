@@ -41,7 +41,7 @@ classifiers = [
 dynamic = ["dependencies", "optional-dependencies"]
 
 [tool.setuptools]
-packages = ["thingsboard_sdk"]
+py-modules = ["tb_device_mqtt"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
