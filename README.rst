@@ -45,7 +45,7 @@ Installing from PyPI
 =====================
 
 On supported GNU/Linux systems like the Raspberry Pi, you can install the driver locally `from
-PyPI <https://pypi.org/project/circuitpython-thingsboard-client-sdk/>`_.
+PyPI <https://pypi.org/project/thingsboard-circuitpython-client-sdk/>`_.
 To install for current user:
 
 .. code-block:: shell
@@ -119,7 +119,6 @@ Support
 
  - `Join our Discord <https://discord.gg/mJxDjAM3PF>`_
  - `Community chat <https://gitter.im/thingsboard/chat>`_
- - `Q&A forum <https://groups.google.com/forum/#!forum/thingsboard>`_
  - `Stackoverflow <http://stackoverflow.com/questions/tagged/thingsboard>`_
 
 Licenses
