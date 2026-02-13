@@ -23,9 +23,11 @@ Implementation Notes
 import gc
 from json import dumps, loads
 
+import socketpool
+import wifi
+
 __version__ = "0.0.1"
 __repo__ = "https://github.com/samson0v/CircuitPython_thingsboard-client-sdk.git"
-
 
 RPC_REQUEST_TOPIC = "v1/devices/me/rpc/request/"
 RPC_RESPONSE_TOPIC = "v1/devices/me/rpc/response/"
@@ -68,6 +70,7 @@ class TBDeviceMqttClient:
         if not client_id:
             client_id = "sdk-client"
         self._client_id = client_id
+        self._pool = socketpool.SocketPool(wifi.radio)
 
         self._client = MQTT(
             broker=self._host,
@@ -76,6 +79,7 @@ class TBDeviceMqttClient:
             username=self._access_token,
             password="pswd",
             keep_alive=120,
+            socket_pool=self._pool,
         )
 
     def connect(self):
