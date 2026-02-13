@@ -50,20 +50,20 @@ To install for current user:
 
 .. code-block:: shell
 
-    pip3 install circuitpython-thingsboard-client-sdk
+    pip3 install thingsboard-circuitpython-client-sdk
 
 To install system-wide (this may be required in some cases):
 
 .. code-block:: shell
 
-    sudo pip3 install circuitpython-thingsboard-client-sdk
+    sudo pip3 install thingsboard-circuitpython-client-sdk
 
 To install in a virtual environment in your current project:
 
 .. code-block:: shell
 
     mkdir project-name && cd project-name
-    python3 -m venv .venv
+    python3 -m venv .env
     source .env/bin/activate
     pip3 install thingsboard-circuitpython-client-sdk
 
@@ -97,15 +97,45 @@ Client initialization and telemetry publishing
 
 .. code-block:: python
 
-    from tb_device_mqtt import TBDeviceMqttClient
-    telemetry = {"temperature": 41.9, "enabled": False, "currentFirmwareVersion": "v1.2.2"}
-    client = TBDeviceMqttClient(host="127.0.0.1", port=1883, access_token="A1_TEST_TOKEN")
-    # Connect to ThingsBoard
-    client.connect()
-    # Sending telemetry without checking the delivery status
-    client.send_telemetry(telemetry)
-    # Disconnect from ThingsBoard
-    client.disconnect()
+import time
+
+from tb_device_mqtt import TBDeviceMqttClient  # ThingsBoard MQTT client wrapper (your SDK)
+import wifi  # CircuitPython Wi-Fi module
+
+# Quick sanity-check that Wi-Fi is up before using MQTT
+print("WiFi connected:", wifi.radio.connected)
+print("IP:", wifi.radio.ipv4_address)
+
+# ThingsBoard connection settings
+HOST = "YOUR_HOST"            # e.g. "thingsboard.cloud" or "192.168.1.10"
+PORT = "YOUR_PORT"            # e.g. 1883 (use an int if your client expects it)
+TOKEN = "YOUR_ACCESS_TOKEN"   # device access token from ThingsBoard
+
+# Telemetry payload to send (will appear in the device telemetry in ThingsBoard)
+telemetry = {"temperature": 41.9, "enabled": False, "currentFirmwareVersion": "v1.2.2"}
+
+# Create MQTT client instance
+client = TBDeviceMqttClient(host=HOST, port=PORT, access_token=TOKEN)
+
+try:
+    print("Connecting...")
+    client.connect()          # open MQTT connection to ThingsBoard
+    time.sleep(1)             # small delay to ensure connection stabilizes on some boards
+
+    print("Sending telemetry...")
+    client.send_telemetry(telemetry)  # publish telemetry message
+    time.sleep(1)             # allow time for message to be sent before disconnecting
+
+finally:
+    print("Disconnecting...")
+    try:
+        client.disconnect()   # close MQTT connection cleanly
+    except Exception as e:
+        # Prevent cleanup from crashing the script on disconnect issues
+        print("Disconnect error:", e)
+
+
+
 
 Contributing
 ============
