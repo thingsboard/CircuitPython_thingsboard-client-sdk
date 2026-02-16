@@ -10,7 +10,7 @@ import wifi  # CircuitPython Wi-Fi module
 from tb_device_mqtt import TBDeviceMqttClient  # ThingsBoard MQTT client wrapper (your SDK)
 
 # Sanity check: Wi-Fi must be connected before MQTT
-print("WiFi connected:", wifi.radio.connected)
+print("Connected:", wifi.radio.connected)
 print("IP:", wifi.radio.ipv4_address)
 
 # ThingsBoard connection settings
@@ -23,7 +23,7 @@ DEADLINE = 20                # how long we keep pumping MQTT loop (seconds)
 client = TBDeviceMqttClient(host=HOST, port=PORT, access_token=TOKEN)
 client.connect()
 
-def callback(result, *args):
+def callback(result, *args): # noqa: F841
     # Called when subscribed attribute update arrives
     # (extra args may contain metadata depending on your SDK design)
     print("Received data:", result)
