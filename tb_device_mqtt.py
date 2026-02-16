@@ -142,6 +142,17 @@ class TBDeviceMqttClient:
             qos=self.quality_of_service,
         )
 
+    def check_for_msg(self):
+        self._client.loop()
+
+    def send_rpc_reply(self, request_id, response):
+        payload = dumps(response)
+        self._client.publish(
+            RPC_RESPONSE_TOPIC + str(request_id),
+            payload,
+            qos=self.quality_of_service,
+        )
+
     def set_server_side_rpc_request_handler(self, handler):
         self.__device_on_server_side_rpc_response = handler
 
@@ -183,10 +194,8 @@ class TBDeviceMqttClient:
             self.__device_sub_dict = {}
         self.__device_sub_dict = dict((k, v) for k, v in self.__device_sub_dict.items() if v)
 
-    def all_subscribed_topics_callback(self, topic, msg):
-        topic = topic.decode("utf-8")
+    def all_subscribed_topics_callback(self, mqtt_client, topic, msg):
         print("callback", topic, msg)
-
         self._on_decode_message(topic, msg)
 
     def _on_decode_message(self, topic, msg):
