@@ -17,7 +17,7 @@ print("IP:", wifi.radio.ipv4_address)
 HOST = "YOUR_HOST"  # e.g. "thingsboard.cloud" or "192.168.1.10"
 PORT = 1883  # standard MQTT port (non-TLS)
 TOKEN = "YOUR_ACCESS_TOKEN"  # device access token from ThingsBoard
-DEADLINE = 20  # how long we keep pumping MQTT loop (seconds)
+TIMEOUT = 20  # how long we keep pumping MQTT loop (seconds)
 
 # Create and connect MQTT client
 client = TBDeviceMqttClient(host=HOST, port=PORT, access_token=TOKEN)
@@ -36,7 +36,7 @@ def on_attributes_change(result, exception=None):
 client.request_attributes(client_keys=["atr1", "atr2"], callback=on_attributes_change)
 
 # IMPORTANT: CircuitPython needs a loop to receive/process MQTT packets
-deadline = time.monotonic() + DEADLINE
+deadline = time.monotonic() + TIMEOUT
 while time.monotonic() < deadline:
     client.check_for_msg()  # wraps MiniMQTT.loop() -> triggers callbacks
     time.sleep(0.05)  # small sleep to reduce CPU usage
