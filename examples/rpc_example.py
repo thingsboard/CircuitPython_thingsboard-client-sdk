@@ -21,10 +21,6 @@ TOKEN = "YOUR_ACCESS_TOKEN"  # device access token from ThingsBoard
 RPC_METHODS = ("Pwd", "Ls")
 
 
-# Create MQTT client instance
-client = TBDeviceMqttClient(host=HOST, port=PORT, access_token=TOKEN)
-
-
 def on_server_side_rpc_request(request_id, request_body):
     # request_id: numeric id from the MQTT topic
     # request_body: decoded JSON dict, typically {"method": "...", "params": ...}
@@ -65,6 +61,7 @@ def on_server_side_rpc_request(request_id, request_body):
             client.send_rpc_reply(request_id, reply)
 
 
+# Create MQTT client instance
 client = TBDeviceMqttClient(HOST, port=PORT, access_token=TOKEN)
 # Register the server-side RPC callback before the main loop
 client.set_server_side_rpc_request_handler(on_server_side_rpc_request)
