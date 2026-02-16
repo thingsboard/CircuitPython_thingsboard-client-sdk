@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: Unlicense
 
 import time
+
 import wifi  # CircuitPython Wi-Fi module
 
 from tb_device_mqtt import TBDeviceMqttClient  # ThingsBoard MQTT client wrapper (your SDK)
