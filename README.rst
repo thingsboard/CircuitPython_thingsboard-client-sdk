@@ -1,7 +1,7 @@
 ThingsBoard CircuitPython Client SDK
 ====================================
 
-.. image:: ./logo.png
+.. image:: ./docs/_static/logo.png
     :alt: ThingsBoard Logo
     :align: center
 
