@@ -23,8 +23,7 @@ Implementation Notes
 import gc
 from json import dumps, loads
 
-import socketpool
-import wifi
+from network_adapter import NetworkAdapterFactory
 
 __version__ = "0.0.1"
 __repo__ = "https://github.com/samson0v/CircuitPython_thingsboard-client-sdk.git"
@@ -39,12 +38,13 @@ CLAIMING_TOPIC = "v1/devices/me/claim"
 
 class TBDeviceMqttClient:
     def __init__(
-        self,
-        host,
-        port=1883,
-        access_token=None,
-        quality_of_service=None,
-        client_id=None,
+            self,
+            host,
+            port=1883,
+            access_token=None,
+            quality_of_service=None,
+            client_id=None,
+            network_adapter=None
     ):
         from adafruit_minimqtt.adafruit_minimqtt import MQTT
 
@@ -70,17 +70,22 @@ class TBDeviceMqttClient:
         if not client_id:
             client_id = "sdk-client"
         self._client_id = client_id
-        self._pool = socketpool.SocketPool(wifi.radio)
+        self._adapter = network_adapter or NetworkAdapterFactory.create()
+        mqtt_kwargs = {
+            "broker": self._host,
+            "port": self._port,
+            "client_id": self._client_id,
+            "username": self._access_token,
+            "password": "pswd",
+            "keep_alive": 120,
+            "socket_pool": self._adapter.get_socket_pool()
 
-        self._client = MQTT(
-            broker=self._host,
-            port=self._port,
-            client_id=self._client_id,
-            username=self._access_token,
-            password="pswd",
-            keep_alive=120,
-            socket_pool=self._pool,
-        )
+        }
+        ssl_context = self._adapter.get_ssl_context()
+        if ssl_context is not None:
+            mqtt_kwargs["ssl_context"] = ssl_context
+
+        self._client = MQTT(**mqtt_kwargs)
 
     def connect(self):
         try:
@@ -200,11 +205,11 @@ class TBDeviceMqttClient:
 
     def _on_decode_message(self, topic, msg):
         if topic.startswith(RPC_REQUEST_TOPIC):
-            request_id = topic[len(RPC_REQUEST_TOPIC) : len(topic)]
+            request_id = topic[len(RPC_REQUEST_TOPIC): len(topic)]
             if self.__device_on_server_side_rpc_response:
                 self.__device_on_server_side_rpc_response(request_id, loads(msg))
         elif topic.startswith(RPC_RESPONSE_TOPIC):
-            request_id = int(topic[len(RPC_RESPONSE_TOPIC) : len(topic)])
+            request_id = int(topic[len(RPC_RESPONSE_TOPIC): len(topic)])
             callback = self.__device_client_rpc_dict.pop(request_id)
             callback(request_id, loads(msg), None)
         elif topic == ATTRIBUTES_TOPIC:
@@ -227,7 +232,7 @@ class TBDeviceMqttClient:
             for res in dict_results:
                 res(msg, None)
         elif topic.startswith(ATTRIBUTE_TOPIC_RESPONSE):
-            req_id = int(topic[len(ATTRIBUTES_TOPIC + "/response/") :])
+            req_id = int(topic[len(ATTRIBUTES_TOPIC + "/response/"):])
             callback = self._attr_request_dict.pop(req_id)
             if isinstance(callback, tuple):
                 callback[0](loads(msg), None, callback[1])
