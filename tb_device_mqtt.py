@@ -21,9 +21,8 @@ Implementation Notes
 """
 
 import gc
+import sys
 from json import dumps, loads
-
-from network_adapter import NetworkAdapterFactory
 
 __version__ = "0.0.1"
 __repo__ = "https://github.com/samson0v/CircuitPython_thingsboard-client-sdk.git"
@@ -34,6 +33,54 @@ ATTRIBUTES_TOPIC = "v1/devices/me/attributes"
 ATTRIBUTE_REQUEST_TOPIC = "v1/devices/me/attributes/request/"
 ATTRIBUTE_TOPIC_RESPONSE = "v1/devices/me/attributes/response/"
 CLAIMING_TOPIC = "v1/devices/me/claim"
+
+
+class NetworkAdapter:
+    def get_socket_pool(self):
+        pass
+
+    def get_ssl_context(self):
+        pass
+
+
+class CircuitPythonNetworkAdapter(NetworkAdapter):
+    def __init__(self):
+        import socketpool
+        import wifi
+
+        self._pool = socketpool.SocketPool(wifi.radio)
+
+    def get_socket_pool(self):
+        return self._pool
+
+    def get_ssl_context(self):
+        return None
+
+
+class CPythonNetworkAdapter(NetworkAdapter):
+    def __init__(self):
+        import adafruit_connection_manager
+        from adafruit_connection_manager import CPythonNetwork
+
+        radio = CPythonNetwork()
+        self._pool = adafruit_connection_manager.get_radio_socketpool(radio)
+        self._ssl_context = adafruit_connection_manager.get_radio_ssl_context(radio)
+
+    def get_socket_pool(self):
+        return self._pool
+
+    def get_ssl_context(self):
+        return self._ssl_context
+
+
+class NetworkAdapterFactory:
+    @staticmethod
+    def create():
+        if sys.implementation.name == "circuitpython":
+            print("Using CircuitPython network adapter")
+            return CircuitPythonNetworkAdapter()
+        print("Using CPython network adapter")
+        return CPythonNetworkAdapter()
 
 
 class TBDeviceMqttClient:
