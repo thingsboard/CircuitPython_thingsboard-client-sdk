@@ -41,7 +41,7 @@ classifiers = [
 dynamic = ["dependencies", "optional-dependencies"]
 
 [tool.setuptools]
-py-modules = ["tb_device_mqtt"]
+py-modules = ["tb_device_mqtt", "network_adapter"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
