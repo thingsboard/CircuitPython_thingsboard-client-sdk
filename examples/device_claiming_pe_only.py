@@ -14,29 +14,41 @@ print("WiFi connected:", wifi.radio.connected)
 print("IP:", wifi.radio.ipv4_address)
 
 # ThingsBoard connection settings
-HOST = "YOUR_HOST"  # or your local TB host/IP
-PORT = 1883  # 1883 = MQTT (no TLS)
-TOKEN = "YOUR_ACCESS_TOKEN"  # token of the device you want to claim
+HOST = "thingsboard.cloud"  # or your local TB host/IP
+PORT = 1883  # standard MQTT port (non-TLS)
+TOKEN = "YOUR_ACCESS_TOKEN"  # device access token from ThingsBoard
 
 # Claiming settings
 SECRET_KEY = "DEVICE_SECRET_KEY"  # key configured in the claiming widget
 DURATION_MS = 30000  # how long the claim request is valid (ms)
 
-# Create client and connect
-client = TBDeviceMqttClient(host=HOST, port=PORT, access_token=TOKEN)
+client = None
 
-print("Connecting to ThingsBoard...")
-client.connect()
+try:
+    # Create ThingsBoard MQTT client
+    client = TBDeviceMqttClient(host=HOST, port=PORT, access_token=TOKEN)
 
-# Send claiming request
-print("Sending claiming request...")
-client.claim_device(secret_key=SECRET_KEY, duration_ms=DURATION_MS)
+    print("Connecting to ThingsBoard...")
+    client.connect()
+    print("Connected to ThingsBoard")
 
-# Give MQTT some time to send packets (CircuitPython needs loop pumping)
-deadline = time.monotonic() + 5
-while time.monotonic() < deadline:
-    client.check_for_msg()  # processes incoming packets (if any) and keeps connection alive
-    time.sleep(0.05)
+    # Send claiming request
+    print("Sending claiming request...")
+    client.claim_device(secret_key=SECRET_KEY, duration_ms=DURATION_MS)
+    print("Claiming request was sent")
 
-print("Done. If the secret key is correct, the device should be claimed in ThingsBoard.")
-client.disconnect()
+    # Keep the script alive for the claiming window
+    # (so the device stays online while the claim is performed)
+    time.sleep(DURATION_MS)
+
+except Exception as e:
+    print("Failed to execute device claiming:", e)
+
+finally:
+    # Disconnect cleanly
+    if client is not None:
+        try:
+            client.disconnect()
+        except Exception as e:
+            print("Disconnect failed:", e)
+    print("Connection closed")
