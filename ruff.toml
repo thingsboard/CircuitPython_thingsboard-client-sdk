@@ -94,6 +94,7 @@ ignore = [
     "PLR0913",  # too-many-arguments
     "PLR0917",  # too-many-positional-arguments
     "PLC0415", # top-level-import
+    "PLR6301",  # no-self-use
     "UP031",
     "UP032",
     "PLR0912",

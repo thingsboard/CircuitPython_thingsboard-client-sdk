@@ -23,8 +23,7 @@ Implementation Notes
 import gc
 from json import dumps, loads
 
-import socketpool
-import wifi
+from network_adapter import NetworkAdapterFactory
 
 __version__ = "0.0.1"
 __repo__ = "https://github.com/samson0v/CircuitPython_thingsboard-client-sdk.git"
@@ -45,6 +44,7 @@ class TBDeviceMqttClient:
         access_token=None,
         quality_of_service=None,
         client_id=None,
+        network_adapter=None,
     ):
         from adafruit_minimqtt.adafruit_minimqtt import MQTT
 
@@ -70,17 +70,21 @@ class TBDeviceMqttClient:
         if not client_id:
             client_id = "sdk-client"
         self._client_id = client_id
-        self._pool = socketpool.SocketPool(wifi.radio)
+        self._adapter = network_adapter or NetworkAdapterFactory.create()
+        mqtt_kwargs = {
+            "broker": self._host,
+            "port": self._port,
+            "client_id": self._client_id,
+            "username": self._access_token,
+            "password": "pswd",
+            "keep_alive": 120,
+            "socket_pool": self._adapter.get_socket_pool(),
+        }
+        ssl_context = self._adapter.get_ssl_context()
+        if ssl_context is not None:
+            mqtt_kwargs["ssl_context"] = ssl_context
 
-        self._client = MQTT(
-            broker=self._host,
-            port=self._port,
-            client_id=self._client_id,
-            username=self._access_token,
-            password="pswd",
-            keep_alive=120,
-            socket_pool=self._pool,
-        )
+        self._client = MQTT(**mqtt_kwargs)
 
     def connect(self):
         try:
