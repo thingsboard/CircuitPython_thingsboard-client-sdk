@@ -14,9 +14,9 @@
         "config": {
           "datasources": [
             {
-              "type": "device",
+              "type": "entity",
               "name": "",
-              "deviceId": "86d57f40-2841-11f1-ab48-b99dc7a38da5",
+              "deviceId": null,
               "entityAliasId": "06f3ba84-5939-bc77-d432-6a9790ffc895",
               "dataKeys": [
                 {
@@ -1945,16 +1945,6 @@
       }
     },
     "entityAliases": {
-      "c29e18f6-8142-829a-c5eb-ea9e29b27434": {
-        "id": "c29e18f6-8142-829a-c5eb-ea9e29b27434",
-        "alias": "smart weather device",
-        "filter": {
-          "type": "entityName",
-          "resolveMultiple": false,
-          "entityType": "DEVICE",
-          "entityNameFilter": "smart weather device"
-        }
-      },
       "06f3ba84-5939-bc77-d432-6a9790ffc895": {
         "id": "06f3ba84-5939-bc77-d432-6a9790ffc895",
         "alias": "Smart Weather Device",
