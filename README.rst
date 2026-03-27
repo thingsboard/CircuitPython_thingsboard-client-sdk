@@ -139,7 +139,7 @@ following command to install:
 
 .. code-block:: shell
 
-    circup install thingsboard-circuitpython-client-sdk
+    circup install tb_device_mqtt
 
 Or the following command to update an existing version:
 
