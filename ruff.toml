@@ -98,6 +98,7 @@ ignore = [
     "UP031",
     "UP032",
     "PLR0912",
+    "CPY001",   # missing copyright notice
 ]
 
 [format]
